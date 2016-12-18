@@ -13,4 +13,4 @@ gulp.task('test', function() {
   .pipe(mocha());
 });
 
-gulp.task('default', ['mocha']);
+gulp.task('default', ['mocha', 'eslint']);

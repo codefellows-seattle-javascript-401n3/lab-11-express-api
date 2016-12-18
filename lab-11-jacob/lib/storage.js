@@ -34,6 +34,8 @@ exports.fetchItem = function(schemaName, id) { //this is the version that persis
   });
 };
 
+
+
 exports.deleteUser = function(schemaName, id) { //this is the version that persists
   if (!schemaName) return Promise.reject(new Error('expected schema name'));
   if (!id) return Promise.reject(new Error('expected id'));

@@ -1,5 +1,4 @@
 const storage = require('../lib/storage.js');
-const response = require('../lib/response.js');
 const User = require('../model/resource.js');
 let jsonParser = require('body-parser').json();
 
@@ -8,15 +7,15 @@ module.exports = function(router) {
     if (req.query.id) {
       storage.fetchItem('users', req.query.id)
       .then(user => {
-        response.sendJSON(res, 200, user);
+        res.status(200).end(JSON.stringify(user));
       })
       .catch(err => {
         console.error(err);
-        response.sendText(res, 404, 'not found');
+        res.status(404).end('not found');
       });
       return;
     }
-    response.sendText(res, 400, 'bad request');
+    res.status(400).end('bad request');
   });
 
   router.put('/api/users', jsonParser, (req, res) => {
@@ -37,7 +36,7 @@ module.exports = function(router) {
       })
         .catch(err => {
           console.error(err);
-          response.sendText(res, 404, 'not found');
+          res.status(404).end('not found');
           res.end();
         });
       return;
