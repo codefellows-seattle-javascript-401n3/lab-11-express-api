@@ -16,7 +16,7 @@ app.use(jsonParser);
 require('./routes/poke-routes')(router);
 app.use(router);
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.error(err.message);
 
   err = createError(500, err.message);
