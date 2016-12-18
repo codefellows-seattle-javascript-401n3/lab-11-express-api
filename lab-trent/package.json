@@ -1,0 +1,11 @@
+{
+  "name": "express-api",
+  "version": "1.0.0",
+  "description": "Single resource API in express for 401.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Trenton Kress",
+  "license": "ISC"
+}
