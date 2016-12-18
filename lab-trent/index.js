@@ -3,6 +3,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const createError = require('http-errors');
 
 const PORT = process.env.PORT || 3000;
 
@@ -14,7 +15,14 @@ app.get('*', function(req, res, next) {
   next();
 });
 
-app.use('/rsplayer', require('./routes/rs-highscore'));
+app.use('/statshots', require('./routes/rs-highscore'));
+
+app.use(function(err, req, res) {
+  console.error(err);
+
+  err = createError(500, err.message);
+  res.status(err.status).send(err.name);
+});
 
 app.listen(PORT, function() {
   console.log('Server listening on http://localhost/:' + PORT);

@@ -6,15 +6,33 @@ const DATA_PATH = './data';
 
 let resourceCache = { };
 
-exports.addResource = function(resource) {
+exports.addResource = function(resource, callback) {
   resourceCache[resource.id] = resource;
   fs.writeFile(DATA_PATH + '/' + resource.id + '.json', JSON.stringify(resource), function(err) {
-    if (err) throw err;
+    if (err) callback(err);
+    callback(null);
   });
 };
 
-exports.deleteResource = function(resource) {
-  delete resourceCache[resource.id];
+exports.deleteResource = function(id, callback) {
+  delete resourceCache[id];
+  fs.stat(DATA_PATH + '/' + id + '.json', function(err) {
+    if (err) callback(err);
+    fs.unlink(DATA_PATH + '/' + id + '.json', function(err) {
+      if (err) callback(err);
+      callback(null);
+    });
+  });
+};
+
+exports.putResource = function(resource, callback) {
+  exports.deleteResource(resource.id, function(err) {
+    if (err) callback(err);
+    exports.addResource(resource, function(err) {
+      if (err) callback(err);
+      callback(null);
+    });
+  });
 };
 
 exports.getResource = function(id, callback) {
