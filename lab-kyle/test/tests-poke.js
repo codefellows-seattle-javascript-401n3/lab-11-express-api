@@ -3,27 +3,18 @@
 let request = require('superagent');
 let expect = require('chai').expect;
 
-const server = require('../server.js');
-const port = process.env.PORT || 3000;
+require('../server.js');
+// const port = process.env.PORT || 3000;
 let url = 'http://localhost:3000/api';
 
 describe('a restful endpoint', function() {
 
   var pokemon = null;
 
-  before(function(done) {
-    server.listen(port);
-    done();
-  });
-  after(function(done) {
-    server.close();
-    done();
-  });
-
   describe('unregistered route', function() {
     it('will respond 404', function(done) {
       request.get(`${url}/pokemon/fail`)
-      .end(function(err, res) {
+      .end((err, res) => {
         expect(res.status).to.equal(404);
         done();
       });
@@ -65,7 +56,7 @@ describe('a restful endpoint', function() {
 
   describe('GET /api/pokemon', function() {
     it('can fetch a pokemon', function(done) {
-      request.get(`${url}/pokemon?id=${pokemon.id}`)
+      request.get(`${url}/pokemon/${pokemon.id}`)
       .end(function(err, res) {
         if (err) return done(err);
         expect(res.status).to.equal(200);
@@ -75,7 +66,7 @@ describe('a restful endpoint', function() {
       });
     });
     it('will respond "not found" with invalid id', function(done) {
-      request.get(`${url}/pokemon?id=123456789`)
+      request.get(`${url}/pokemon/123456789`)
       .end(function(err, res) {
         expect(res.status).to.equal(404);
         expect(res.text).to.equal('not found');
@@ -94,7 +85,7 @@ describe('a restful endpoint', function() {
 
   describe('DELETE /api/pokemon', function() {
     it('can delete a pokemon', function(done) {
-      request.delete(`${url}/pokemon?id=${pokemon.id}`)
+      request.delete(`${url}/pokemon/${pokemon.id}`)
       .end(function(err, res) {
         if (err) return done(err);
         expect(res.status).to.equal(204);

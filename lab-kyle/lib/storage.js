@@ -1,6 +1,5 @@
 'use strict';
 
-// const mkdirp = require('mkdirp');
 const del = require('del');
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
@@ -13,11 +12,10 @@ exports.createItem = function(schemaName, item){
   if (!item.name && !item.color) return Promise.reject(new Error('item is not valid'));
 
   let json = JSON.stringify(item);
-  // return mkdirp(`${__dirname}/../data/${schemaName}/`, function() {
+
   return fs.writeFileProm(`${__dirname}/../data/${schemaName}/${item.id}.json`, json)
     .then( () => item)
     .catch( err => Promise.reject(err));
-  // });
 };
 
 
@@ -48,8 +46,5 @@ exports.deleteItem = function(schemaName, id) {
   if (!schemaName) return Promise.reject(new Error('expected schema'));
   if (!id) return Promise.reject(new Error('expected id'));
 
-  return del([`${__dirname}/../data/${schemaName}/${id}.json`])
-            .then(paths => {
-              console.log('Files and folders that would be deleted:\n', paths.join('\n'));
-            });
+  return del([`${__dirname}/../data/${schemaName}/${id}.json`]);
 };

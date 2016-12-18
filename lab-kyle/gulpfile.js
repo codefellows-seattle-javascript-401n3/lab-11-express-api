@@ -18,4 +18,4 @@ gulp.task('dev', function() {
   gulp.watch(['**/*.js', '!node_modules/**'], ['lint', 'mocha']);
 });
 
-gulp. task('default', ['dev']);
+gulp.task('default', ['dev']);

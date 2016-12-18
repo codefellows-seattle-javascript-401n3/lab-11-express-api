@@ -1,16 +1,28 @@
 'use strict';
 
-const http = require('http');
+let express = require('express');
+let morgan = require('morgan');
+let jsonParser = require('body-parser').json();
+let createError = require('http-errors');
 
-const Router = require('./lib/router');
+let app = express();
+let router = express.Router();
 
 const PORT = process.env.PORT || 3000;
-const router = new Router();
+
+app.use(morgan('dev'));
+app.use(jsonParser);
 
 require('./routes/poke-routes')(router);
+app.use(router);
 
-const server = module.exports = http.createServer(router.route());
+app.use((err, req, res, next) => {
+  console.error(err.message);
 
-server.listen(PORT, function() {
+  err = createError(500, err.message);
+  res.status(err.status).send(err.name);
+});
+
+app.listen(PORT, () => {
   console.log(`Server started on port: ${PORT}`);
 });

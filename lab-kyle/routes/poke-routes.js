@@ -1,60 +1,52 @@
 'use strict';
 
 const storage = require('../lib/storage');
-const response = require('../lib/response');
 const Pokemon = require('../model/resource');
 
-module.exports = function(router){
-  router.get('/api/pokemon', function(req, res) {
-    if (req.url.query.id) {
-      storage.fetchItem('pokemon', req.url.query.id)
-        .then( pokemon => {
-          response.sendJSON(res, 200, pokemon);
-        })
-        .catch( err => {
-          console.error(err);
-          response.sendText(res, 404, 'not found');
-        });
-      return;
-    } else if (!req.url.query.id) {
-      storage.fetchAll('pokemon')
-        .then( data => {
-          console.log(data);
-          response.sendJSON(res, 200, data);
-        })
-        .catch(err => {
-          console.error(err);
-          response.sendText(res, 404, 'not found');
-        });
-      return;
-    }
-    response.sendText(res, 400, 'bad request');
+module.exports = (router) => {
+  router.get('/api/pokemon', (req, res) => {
+    storage.fetchAll('pokemon')
+      .then( data => {
+        res.json(data);
+      })
+      .catch(() => {
+        res.status(404).send('not found');
+      });
+  });
+
+  router.get('/api/pokemon/:id', (req, res) => {
+    storage.fetchItem('pokemon', req.params.id)
+      .then( pokemon => {
+        res.json(pokemon);
+      })
+      .catch( () => {
+        res.status(404).send('not found');
+      });
   });
 
   router.post('/api/pokemon', function(req, res) {
     let pokemon = new Pokemon(req.body.name, req.body.color);
     storage.createItem('pokemon', pokemon)
       .then( pokemon => {
-        response.sendJSON(res, 200, pokemon);
+        res.json(pokemon);
       })
-      .catch( err => {
-        console.error(err);
-        response.sendText(res, 400, 'bad request');
+      .catch( () => {
+        res.status(400).send('bad request');
       });
   });
 
-  router.delete('/api/pokemon', function(req, res) {
-    if (req.url.query.id) {
-      storage.deleteItem('pokemon', req.url.query.id)
+  router.delete('/api/pokemon/:id', function(req, res) {
+    if (req.params.id) {
+      storage.deleteItem('pokemon', req.params.id)
         .then( data => {
-          response.sendText(res, 204, data);
+          res.status(204).send(data);
         })
-        .catch( err => {
-          console.error(err);
-          response.sendText(res, 404, 'not found');
+        .catch( () => {
+          res.status(404).send('not found');
         });
       return;
     }
-    response.sendText(res, 400, 'bad request');
+    res.status(400).send('bad request');
   });
+
 };
