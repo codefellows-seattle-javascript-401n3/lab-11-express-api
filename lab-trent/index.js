@@ -3,7 +3,6 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const createError = require('http-errors');
 
 const PORT = process.env.PORT || 3000;
 
@@ -15,12 +14,7 @@ app.get('*', function(req, res, next) {
   next();
 });
 
-app.use('/statshots', require('./routes/statshotroute'));
-
-app.use(function(req, res, err) {
-  err = createError(500, err.message);
-  res.status(err.status).send(err.name);
-});
+app.use('/api', require('./routes/statshotroute'));
 
 app.listen(PORT, function() {
   console.log('Server listening on http://localhost/:' + PORT);
