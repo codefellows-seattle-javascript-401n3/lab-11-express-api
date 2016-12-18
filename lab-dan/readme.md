@@ -1,8 +1,11 @@
-#:dog: Dan's Dog(e) API :dog:
+#:dog: Dan's Dog(e) API with Express :dog:
 
-This is a basic API with _persistent_ data.
+This is a basic API with _persistent_ data which is powered by Express.
 
-Objects are stored as JSON objects in the data folder and the stored objects have the following properties:
+Objects are stored as JSON objects in the data folder and the stored objects have
+the following properties: ```id, creationDate, name, breed```.
+
+Here's an example object that will be sent even if you have not POSTed any data:
 ```
 {
   "id": "1234-test-obj",
@@ -24,5 +27,6 @@ PUT ```/dog``` (```{id: [ID], name: [NAME], breed: [BREED]}```) -- update an exi
   update you must give the id, otherwise a new object will be created. It will return
   the updated or new JSON object.
 
-DELETE /dogs?id="existing-uuid" -- delete an existing record. It will return the text
-```delete completed``` and a ```204``` status code if successful.
+DELETE ```/dogs?id=[existing-uuid]``` -- delete an existing record. It will return the text
+```delete completed``` and a ```204``` status code if successful. If there is no existing object
+for the given ID, it will still return the same success message and code.
