@@ -12,6 +12,13 @@ router.get('/statshots', function(req, res) {
   res.json(resourceManager.getResourceIdList());
 });
 
+router.get('/statshots/:id', function(req, res) {
+  resourceManager.getResource(req.params.id, function(err, data) {
+    if (err) throw createError(404, err.message);
+    res.json(data);
+  });
+});
+
 router.post('/statshots', function(req, res) {
   let snapshot = new StatSnapshot(req.body.username, req.body.stats);
   resourceManager.addResource(snapshot, function(err) {
@@ -21,6 +28,7 @@ router.post('/statshots', function(req, res) {
 });
 
 router.put('/statshots/:id', function(req, res) {
+  if (!req.body.username || !req.body.stats) throw createError(400, 'expected username and stats');
   resourceManager.getResource(req.params.id, function(err, data) {
     if (err) throw createError(400, err.message);
     if (data) {
@@ -28,7 +36,7 @@ router.put('/statshots/:id', function(req, res) {
       data.stats = req.body.stats;
       resourceManager.addResource(data, function(err) {
         if (err) throw createError(400, err.message);
-        res.status(201).json({url:'rs/' + req.params.id});
+        res.status(200).json(data);
       });
     }
   });
