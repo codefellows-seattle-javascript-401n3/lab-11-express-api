@@ -2,10 +2,10 @@
 
 const express = require('express');
 const http = require('http');
-const createError = require('http-errors')
+const createError = require('http-errors');
 
-const StatSnapshot = require('./model/statsnapshot');
-const resourceManager = require('./lib/resourcemanager');
+const StatSnapshot = require('../model/statsnapshot');
+const resourceManager = require('../lib/resourcemanager');
 
 const router = express.Router();
 

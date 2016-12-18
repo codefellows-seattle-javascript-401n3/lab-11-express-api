@@ -15,11 +15,9 @@ app.get('*', function(req, res, next) {
   next();
 });
 
-app.use('/statshots', require('./routes/rs-highscore'));
+app.use('/statshots', require('./routes/statshotroute'));
 
-app.use(function(err, req, res) {
-  console.error(err);
-
+app.use(function(req, res, err) {
   err = createError(500, err.message);
   res.status(err.status).send(err.name);
 });
