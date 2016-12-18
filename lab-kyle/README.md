@@ -30,7 +30,7 @@ both a **name** and **color** property.
 
   -example '{"name": "Pikachu": "color": "yellow"}'
 
-  This will create a new file with that schemas information
+  This will create a new file with that schema's information
 
 ### DELETE request
 
