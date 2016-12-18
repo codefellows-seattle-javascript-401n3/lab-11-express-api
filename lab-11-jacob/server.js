@@ -1,16 +1,24 @@
-const http = require('http');
-const Router = require('./lib/router.js');
+const express = require('express');
+const createError = require('http-errors');
+let bodyParser = require('body-parser');
+let app = express();
+let router = express.Router();
 
 const PORT = process.env.PORT || 3000;
-const router = new Router();
 
 
-require('./route/user-route.js')(router); //this is dependency injection
-// const userRoute = require('./route/user-route.js')
-// userRoute(router) //requiring a function and running it right away
+app.use(bodyParser.json());//function will be executed with every request to the app.
 
-const server = http.createServer(router.route()); //route is a function of rou
+require('./route/user-route.js')(router); //express.Router is now injected into the function param that is returned from requiring this module
+app.use(router);
 
-server.listen(PORT, function() {
-  console.log('listening on port: ' + PORT);
+app.use((err, req, res, next) => {
+  console.error(err.message);
+
+  err = createError(500, err.message);
+  res.status(err.status).send(err.name);
+});
+
+app.listen(3000, () => {
+  console.log(`server started on port ${PORT}`);
 });

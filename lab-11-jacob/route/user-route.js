@@ -1,11 +1,12 @@
 const storage = require('../lib/storage.js');
 const response = require('../lib/response.js');
 const User = require('../model/resource.js');
+let jsonParser = require('body-parser').json();
 
 module.exports = function(router) {
   router.get('/api/users', function(req, res) {
-    if (req.url.query.id) {
-      storage.fetchItem('users', req.url.query.id)
+    if (req.query.id) {
+      storage.fetchItem('users', req.query.id)
       .then(user => {
         response.sendJSON(res, 200, user);
       })
@@ -18,8 +19,33 @@ module.exports = function(router) {
     response.sendText(res, 400, 'bad request');
   });
 
-  router.post('/api/users', function(req, res) {
-    if(Object.keys(req.body).length === 0) {
+  router.put('/api/users', jsonParser, (req, res) => {
+    if (!req.body) {
+      res.writeHead(400, {'Content-Type': 'text/plain',
+      });
+      res.write('include body');
+      res.end();
+      return;
+    }
+    if (req.query.id) {
+      storage.fetchItem('users', req.query.id)
+      .then(data => {
+        console.log(data);
+        data.username = req.body.username;
+        storage.updateItem(data);
+        res.end();
+      })
+        .catch(err => {
+          console.error(err);
+          response.sendText(res, 404, 'not found');
+          res.end();
+        });
+      return;
+    }
+  });
+
+  router.post('/api/users', jsonParser, function(req, res) {
+    if (!req.body) {
       res.writeHead(400, {'Content-Type': 'text/plain',
       });
       res.write('include body');
@@ -46,7 +72,7 @@ module.exports = function(router) {
 
   router.delete('/api/users', function(req, res) {
     try {
-      var user = (req.url.query.id);
+      var user = (req.query.id);
       storage.deleteUser('users', user);
       res.writeHead(204, {
         'Content-Type': 'text/plain',
