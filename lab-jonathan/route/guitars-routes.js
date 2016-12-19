@@ -73,9 +73,23 @@ module.exports = function(router) {
       res.writeHead(400, {
         'Content-Type': 'text/plain',
       });
-      res.write('Bad Request, you swarthy ho');
+      res.write('Bad Request');
       res.end();
     }
+  });
+
+  router.put('/api/guitars/:id', function(req, res) {
+    if(req.params.id) {
+      storage.updateItem('guitar', req.params.id, req.body.make, req.body.model)
+      .then(guitar => {
+        res.json(guitar);
+      })
+      .catch(err => {
+        response.sendText(res, 404, 'Not Found');
+      });
+      return;
+    }
+    response.sendText(res, 400, 'Bad Request');
   });
 
   router.delete('/api/guitars/:id', function(req, res){
