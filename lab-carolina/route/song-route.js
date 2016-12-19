@@ -4,6 +4,7 @@ const Song = require('../model/song.js');
 const storage = require('../lib/storage.js');
 
 module.exports = function(router){
+
   router.get('/api/song/:id', function(req, res) {
     if (req.params.id) {
       storage.fetchItem('song', req.params.id)
@@ -12,11 +13,13 @@ module.exports = function(router){
       })
       .catch( err => {
         console.error(err);
-        res.sendStatus(404).send('not found');
+        res.status(404).send('not found');
       });
       return;
     }
-    res.json(400).send('bad request');
+  });
+  router.get('/api/song', function(req, res){
+    res.status(400).send('bad request');
   });
 
   router.post('/api/song', function(req,res) {
@@ -26,7 +29,7 @@ module.exports = function(router){
       res.json(song);
     } catch (err) {
       console.error(err);
-      res.sendText(400).send('bad request');
+      res.status(400).send('bad request');
     }
   });
 
