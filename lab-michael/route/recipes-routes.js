@@ -1,16 +1,5 @@
-// let recipes = [
-//  {name: 'breakfast casserole', content: 'this is some content', mealType: 'breakfast'},
-//  {name: 'pancakes', content: 'this is some content', mealType: 'breakfast'},
-//  {name: 'ham sandwich', content: 'this is some content', mealType: 'lunch'},
-//  {name: 'tomato soup', content: 'this is some content', mealType: 'soup'},
-//  {name: 'chicken marsala', content: 'this is some content', mealType: 'dinner'},
-// ];
 const storage = require('../lib/storage.js');
-// let Router = require('express').Router;
-// let jsonParser = require('body-parser').json();
-
-let Recipe = require('../model/recipe.js');
-// let router = new Router();
+const Recipe = require('../model/recipe.js');
 
 module.exports = function(router){
 
@@ -23,7 +12,6 @@ module.exports = function(router){
         console.error(err);
         res.status(404).send('not found');
       });
-    // res.status(400).send('bad request');
   });
 
   router.get('/api/recipe/:id', function(req, res) {
@@ -50,10 +38,6 @@ module.exports = function(router){
         res.status(400).send('bad request');
       });
   });
-
-  // router.post('/api/recipe', function(req, res) {
-  //   res.status(400).send('bad request');
-  // });
 
   router.put('/api/recipe/:id', function(req, res) {
     if(req.params.id) {
@@ -85,7 +69,7 @@ module.exports = function(router){
     }
   });
 
-  router.delete('/api/recipe', function(req, res) {
+  router.delete('/api/recipe/:id', function(req, res) {
     res.status(400).send('bad request');
   });
 };

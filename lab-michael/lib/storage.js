@@ -51,7 +51,7 @@ exports.updateItem = function(recipe, id, newName, newContent, newMealType) {
       item.name = newName;
       item.content = newContent;
       item.mealType = newMealType;
-      console.log(newName, newContent, newMealType);
+
       let json = JSON.stringify(item);
       fs.writeFileProm(`${__dirname}/../data/${recipe}/${id}.json`, json);
       return item;
