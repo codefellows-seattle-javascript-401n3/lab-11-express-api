@@ -5,7 +5,7 @@
 //  {name: 'tomato soup', content: 'this is some content', mealType: 'soup'},
 //  {name: 'chicken marsala', content: 'this is some content', mealType: 'dinner'},
 // ];
-let storage = require('../lib/storage.js');
+const storage = require('../lib/storage.js');
 // let Router = require('express').Router;
 // let jsonParser = require('body-parser').json();
 
@@ -41,8 +41,8 @@ module.exports = function(router){
   });
 
   router.post('/api/recipe', function(req, res) {
-      var recipe = new Recipe(req.body.name, req.body.content, req.body.mealType);
-      storage.createItem('recipe', recipe)
+    let recipe = new Recipe(req.body.name, req.body.content, req.body.mealType);
+    storage.createItem('recipe', recipe)
       .then( recipe => {
         res.json(recipe);
       })
@@ -68,7 +68,7 @@ module.exports = function(router){
     }
   });
 
-  router.put('/api/recipe', function(req, res) {
+  router.put('/api/recipe/:id', function(req, res) {
     res.status(400).send('bad request');
   });
 

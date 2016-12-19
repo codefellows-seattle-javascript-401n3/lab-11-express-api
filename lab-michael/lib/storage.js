@@ -3,7 +3,7 @@ const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
 const createError = require('http-errors');
 
-// const storage = {};
+const storage = {};
 
 exports.fetchAll = function(recipe) {
   return fs.readdirProm(`${__dirname}/../data/${recipe}/`)
@@ -51,7 +51,7 @@ exports.updateItem = function(recipe, id, newName, newContent, newMealType) {
       item.name = newName;
       item.content = newContent;
       item.mealType = newMealType;
-
+      console.log(newName, newContent, newMealType);
       let json = JSON.stringify(item);
       fs.writeFileProm(`${__dirname}/../data/${recipe}/${id}.json`, json);
       return item;
