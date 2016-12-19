@@ -1,3 +1,4 @@
+'use strict';
 let uuid = require('node-uuid');
 
 let Recipe = module.exports = function(name, content, mealType) {
