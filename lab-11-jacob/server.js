@@ -1,6 +1,6 @@
 const express = require('express');
-const createError = require('http-errors');
 let bodyParser = require('body-parser');
+let errorHandler = require('./lib/error.js');
 let app = express();
 let router = express.Router();
 
@@ -12,16 +12,7 @@ app.use(bodyParser.json());//function will be executed with every request to the
 require('./route/user-route.js')(router); //express.Router is now injected into the function param that is returned from requiring this module
 app.use(router);
 
-app.use((err, req, res, next) => {
-  if (err.name === 'SyntaxError') {
-    console.log('this fired');
-    res.status(400).end('bad request');
-  } else {
-    err = createError(500, err.message);
-    res.status(err.status).send(err.name);
-    next();
-  }
-});
+app.use(errorHandler);
 
 app.listen(3000, () => {
   console.log(`server started on port ${PORT}`);
