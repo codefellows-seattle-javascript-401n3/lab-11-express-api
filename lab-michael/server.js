@@ -1,25 +1,29 @@
-'use strict'
+'use strict';
 
-let express = require('express');
-let morgan = require('morgan');
-let jsonParser = require('body-parser').json()
+const express = require('express');
+const morgan = require('morgan');
+const jsonParser = require('body-parser').json();
 
-let createError = require('http-errors');
+const createError = require('http-errors');
 
-const PORT = process.env.PORT || 3000;
+const RecipeApp = express();
+const router = express.Router();
 
-let appRecipe = express();
+RecipeApp.use(morgan('dev'));
+RecipeApp.use(jsonParser);
 
-appRecipe.use(morgan('dev'));
-app.use(jsonParser);
-
-
-appRecipe.use((err, req, res, next) => {
+RecipeApp.use((err, req, res, next) => {
   console.error(err.message);
-  err = createError(500, err.messsage);
+
+  err = createError(500, err.message);
   res.status(err.status).send(err.name);
+  next();
 });
 
-app.listen(PORT, () => {
-  console.log('server started');
-})
+require('./route/recipes-routes')(router);
+RecipeApp.use(router);
+const PORT = process.env.PORT || 3000;
+
+RecipeApp.listen(PORT, function() {
+  console.log('server up', PORT);
+});
