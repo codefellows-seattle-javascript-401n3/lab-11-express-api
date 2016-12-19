@@ -1,3 +1,5 @@
+'use strict';
+
 const storage = require('../lib/storage.js');
 const Recipe = require('../model/recipe.js');
 
