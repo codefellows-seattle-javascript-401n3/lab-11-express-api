@@ -13,6 +13,21 @@ storage.createItem = function(item){
     .catch( err => bluebird.reject(err));
 };
 
+storage.updateItem = function(id) {
+  return fs.writeFileProm(`${__dirname}/../data/${id}.json`)
+  .then(data => {
+    try {
+      let item = JSON.parse(data.toString());
+      item.make = newMake;
+      item.model = newModel;
+      let json = JSON.stringify(item);
+    } catch(err){
+      return bluebird.reject(err);
+    }
+  })
+  .catch(err => bluebird.reject(err));
+};
+
 storage.fetchItem = function(id){
   console.log('running fetch');
   return fs.readFileProm(`${__dirname}/../data/${id}.json`)
