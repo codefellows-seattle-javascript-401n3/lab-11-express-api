@@ -13,10 +13,14 @@ require('./route/user-route.js')(router); //express.Router is now injected into 
 app.use(router);
 
 app.use((err, req, res, next) => {
-  console.error(err.message);
-
-  err = createError(500, err.message);
-  res.status(err.status).send(err.name);
+  if (err.name === 'SyntaxError') {
+    console.log('this fired');
+    res.status(400).end('bad request');
+  } else {
+    err = createError(500, err.message);
+    res.status(err.status).send(err.name);
+    next();
+  }
 });
 
 app.listen(3000, () => {

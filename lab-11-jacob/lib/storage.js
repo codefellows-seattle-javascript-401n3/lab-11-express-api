@@ -30,7 +30,6 @@ exports.fetchItem = function(schemaName, id) { //this is the version that persis
   })
   .catch(err => {
     Promise.reject(err);
-
   });
 };
 

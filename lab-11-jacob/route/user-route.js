@@ -7,11 +7,12 @@ module.exports = function(router) {
     if (req.query.id) {
       storage.fetchItem('users', req.query.id)
       .then(user => {
-        res.status(200).end(JSON.stringify(user));
-      })
-      .catch(err => {
-        console.error(err);
-        res.status(404).end('not found');
+        if(!user) {
+          console.error('not found');
+          res.status(404).end('not found');
+        } else {
+          res.end(JSON.stringify(user));
+        }
       });
       return;
     }
@@ -19,7 +20,7 @@ module.exports = function(router) {
   });
 
   router.put('/api/users', jsonParser, (req, res) => {
-    if (!req.body) {
+    if (Object.keys(req.body).length === 0) {
       res.writeHead(400, {'Content-Type': 'text/plain',
       });
       res.write('include body');
@@ -29,8 +30,8 @@ module.exports = function(router) {
     if (req.query.id) {
       storage.fetchItem('users', req.query.id)
       .then(data => {
-        console.log(data);
         data.username = req.body.username;
+        res.json(req.body);
         storage.updateItem(data);
         res.end();
       })
@@ -44,7 +45,7 @@ module.exports = function(router) {
   });
 
   router.post('/api/users', jsonParser, function(req, res) {
-    if (!req.body) {
+    if (Object.keys(req.body).length === 0) {
       res.writeHead(400, {'Content-Type': 'text/plain',
       });
       res.write('include body');
@@ -61,10 +62,10 @@ module.exports = function(router) {
       res.end();
     } catch (err) {
       console.error(err);
-      res.writehead(400, {
+      res.writeHead(400, {
         'Content-Type': 'text/plain',
       });
-      res.write('you can\'t post that smut!');
+      res.write('Bad request');
       res.end();
     }
   });
