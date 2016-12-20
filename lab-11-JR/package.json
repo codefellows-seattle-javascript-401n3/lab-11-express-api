@@ -1,0 +1,28 @@
+{
+  "name": "lab-11-jr",
+  "version": "1.0.0",
+  "description": "lab-11-express",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "chai",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jurrish/lab-11-express-api.git"
+  },
+  "author": "JR",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jurrish/lab-11-express-api/issues"
+  },
+  "homepage": "https://github.com/jurrish/lab-11-express-api#readme",
+  "dependencies": {
+    "chai": "^3.5.0",
+    "express": "^4.14.0",
+    "node-uuid": "^1.4.7"
+  }
+}
