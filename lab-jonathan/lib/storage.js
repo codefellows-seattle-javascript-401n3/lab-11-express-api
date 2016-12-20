@@ -13,20 +13,23 @@ storage.createItem = function(item){
     .catch( err => bluebird.reject(err));
 };
 
-storage.updateItem = function(id) {
-  return fs.writeFileProm(`${__dirname}/../data/${id}.json`)
-  .then(data => {
-    try {
-      let item = JSON.parse(data.toString());
-      item.make = newMake;
-      item.model = newModel;
-      let json = JSON.stringify(item);
-    } catch(err){
-      return bluebird.reject(err);
-    }
-  })
-  .catch(err => bluebird.reject(err));
+storage.updateItem = function(id, newMake, newModel) {
+  return fs.readFileProm(`${__dirname}/../data/${id}.json`)
+    .then(data => {
+      try {
+        let item = JSON.parse(data.toString());
+        item.make = newMake;
+        item.model = newModel;
+        let json = JSON.stringify(item);
+        fs.writeFileProm(`${__dirname}/../data/${id}.json`, json);
+        return json;
+      } catch (err) {
+        return bluebird.reject(err);
+      }
+    })
+    .catch(err => bluebird.reject(err));
 };
+
 
 storage.fetchItem = function(id){
   console.log('running fetch');
@@ -43,33 +46,20 @@ storage.fetchItem = function(id){
     .catch(err => bluebird.reject(err));
 };
 
+//NOTE: I've removed the 'fetchAll' function becuase it wasn't in the requirements and having it in there failed my 400 test for no ID provided since when you run fetchAll you're not providing an ID.
 // storage.fetchAll = function() {
-//   return fs.readdirProm(`${__dirname}/../data`)
+//   return fs.readdirProm(`${__dirname}/../data/`)
 //   .then(data => {
-//     console.log('data', data);
-//     console.log('data is: ', typeof(data));
-//       data.forEach(file => {
-//         console.log('file' , file);
-//         // return data.map(str => {
-//   //       // str.replace('.json', '');
-//       //   try {
-//       //     let item = JSON.parse(data.toString());
-//       //     console.log(item);
-//       //     return item;
-//       //   }
-//       //   catch(err){
-//       //     return bluebird.reject(err);
-//       //   }
-//       // // });
-//       });
+//     return data.map(str =>
+//       str.replace('.json', ''));
 //   });
-//     // .catch(err => bluebird.reject(err));
 // };
 
 storage.deleteItem = function(id){
-  del([`${__dirname}/../data/${id}.json`])
+  return del([`${__dirname}/../data/${id}.json`])
   .then( paths => {
     console.log('Deleted file: ', `${id}.json`);
+    return bluebird.resolve(paths);
   })
   .catch(err => bluebird.reject(err));
 };

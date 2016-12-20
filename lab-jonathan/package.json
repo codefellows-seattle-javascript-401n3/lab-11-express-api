@@ -1,29 +1,31 @@
 {
   "name": "lab-jonathan",
   "version": "1.0.0",
-  "description": "Lab 11 Express",
+  "description": "lab 11 express",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
-  "scripts": {
-    "test": "test"
-  },
-  "author": "Jonathan",
-  "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
+    "chai": "^3.5.0",
+    "del": "^2.2.2",
     "express": "^4.14.0",
-    "fs": "0.0.1-security",
+    "fs": "^0.0.1-security",
     "gulp": "^3.9.1",
     "http-errors": "^1.5.1",
     "morgan": "^1.7.0",
+    "node-uuid": "^1.4.7",
+    "nodemon": "^1.11.0",
     "superagent": "^3.3.1"
   },
   "devDependencies": {
-    "bluebird": "^3.4.6",
-    "chai": "^3.5.0",
-    "del": "^2.2.2",
     "mocha": "^3.2.0"
-  }
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Jonathan D",
+  "license": "ISC"
 }

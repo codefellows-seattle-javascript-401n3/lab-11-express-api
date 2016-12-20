@@ -1,33 +1,21 @@
 let storage = require('../lib/storage.js');
-let response = require('../lib/response.js');
 let Guitar = require('../model/guitars.js');
 let url = require('url');
 
 
 module.exports = function(router) {
+
+//NOTE: I've removed the 'fetchAll' function becuase it wasn't in the requirements and having it in there failed my 400 test for no ID provided since when you run fetchAll you're not providing an ID.
   // router.get('/api/guitars', (req, res) => {
-  //   // console.log('Boomstick');
-  //   storage.fetchAll()
+  //   storage.fetchAll(req.params.id)
   //   .then(guitar => {
-  //     console.log('guitar:' , guitar);
   //     res.json(guitar);
+  //   })
+  //   .catch(err => {
+  //     console.error(err);
+  //     res.status(404).send('not found');
   //   });
-  // });
-  // router.get('/api/guitars', function(req, res) {
-  //   // if(req.url.query) {
-  //     storage.fetchItem(req.url.query)
-  //     console.log('query' , req.url.query)
-  //     .then(guitar => {
-  //       console.log('then guitar', guitar);
-  //       res.sendJSON(res, 200, guitar);
-  //       console.log(res);
-  //     })
-  //     .catch(err => {
-  //       response.sendText(res, 404, 'Not Found');
-  //     });
-  //     // return;
-  //   // }
-  //   response.sendText(res, 400, 'Bad Request');
+  //   return;
   // });
 
   router.get('/api/guitars/:id', (req, res) => {
@@ -36,27 +24,17 @@ module.exports = function(router) {
     storage.fetchItem(req.params.id)
     .then(guitar => {
       res.json(guitar);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(404).send('not found');
     });
-    // res.write('the response is: ', JSON.stringify(res));
+    return;
   });
 
-  // router.get('/api/guitars/:id', (req, res) => {
-  //   console.log('boogers');
-  //   // let urlParse = url.parse(req.url);
-  //   console.log(req.params.id);
-  //   if(req.params.id) {
-  //     storage.fetchItem(req.params.id);
-  //     res.status(200).json(res);
-  //     console.log("res: " , res);
-  //     // .then(guitar => {
-  //     // })
-  //     // .catch(err => {
-  //     //   res.sendText(res ,404, 'Not Found');
-  //     // });
-  //     return;
-  //   }
-  //   res.sendText(res, 400, 'Bad Request');
-  // });
+  router.get('/api/guitars', function(req, res) {
+    res.status(400).send('bad request');
+  });
 
   router.post('/api/guitars', function(req, res) {
     try{
@@ -80,29 +58,32 @@ module.exports = function(router) {
 
   router.put('/api/guitars/:id', function(req, res) {
     if(req.params.id) {
-      storage.updateItem('guitar', req.params.id, req.body.make, req.body.model)
+      storage.updateItem(req.params.id, req.body.make, req.body.model)
       .then(guitar => {
         res.json(guitar);
       })
       .catch(err => {
-        response.sendText(res, 404, 'Not Found');
+        res.status(400).send('Bad Request');
       });
       return;
     }
-    response.sendText(res, 400, 'Bad Request');
   });
+
 
   router.delete('/api/guitars/:id', function(req, res){
     if(req.params.id) {
       storage.deleteItem(req.params.id)
       .then(() => {
-        response.sendText(res, 200, 'deleted the file');
+        console.log('in delete cb');
+        //res.sendText(res, 200, 'deleted the file');
+        res.json({msg: 'deleted the file'});
       })
       .catch(err => {
-        response.sendText(res, 404, 'Not Found');
+        res.status(204);
+        res.json({msg: 'Not Found'});
       });
       return;
     }
-    response.sendText(res, 400, 'Bad Request');
+    // res.sendText(res, 400, 'Bad Request');
   });
 };
