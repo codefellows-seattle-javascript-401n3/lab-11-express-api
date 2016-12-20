@@ -23,9 +23,9 @@ describe('this is a basic test that my server spins up', function() {
       })
   })
 
-  it('should get a 404 response with \'not found\' for a GET request to \'/dogs?id=nonexistentid\'', function(done) {
+  it('should get a 404 response with \'not found\' for a GET request to \'/dogs/nonexistentid\'', function(done) {
     chai.request(app)
-      .get('/dogs?id=nonexistentid')
+      .get('/dogs/nonexistentid')
       .end(function(err, res) {
         expect(res).to.have.status(404)
         expect(res.text).to.be.equal('not found\n')
@@ -33,9 +33,9 @@ describe('this is a basic test that my server spins up', function() {
       })
   })
 
-  it('should get a 200 response with the correct object for a GET request to \'/dogs?id=1234-test-obj\'', function(done) {
+  it('should get a 200 response with the correct object for a GET request to \'/dogs/1234-test-obj\'', function(done) {
     chai.request(app)
-      .get('/dogs?id=1234-test-obj')
+      .get('/dogs/1234-test-obj')
       .end(function(err, res) {
         let data = JSON.parse(res.text)
         expect(err).to.be.null
@@ -100,10 +100,9 @@ describe('this is a basic test that my server spins up', function() {
       })
   })
 
-
-  it('should properly delete an object and return a 200 status for a DELETE request to \'/dogs\'', function(done) {
+  it('should properly delete an object and return a 200 status for a DELETE request to \'/dogs/:id\'', function(done) {
     chai.request(app)
-      .del(`/dogs?id=${testID1}`)
+      .del(`/dogs/${testID1}`)
       .end(function(err, res) {
         expect(err).to.be.null
         expect(res).to.have.status(204)
@@ -111,9 +110,9 @@ describe('this is a basic test that my server spins up', function() {
       })
   })
 
-  it('should \'fail\' silently and return a 200 status for a DELETE request to \'/dogs\' for a nonexistent object', function(done) {
+  it('should \'fail\' silently and return a 200 status for a DELETE request to \'/dogs/:id\' for a nonexistent object', function(done) {
     chai.request(app)
-      .del(`/dogs?id=${testID1}`)
+      .del(`/dogs/${testID1}`)
       .end(function(err, res) {
         expect(err).to.be.null
         expect(res).to.have.status(204)
@@ -123,7 +122,7 @@ describe('this is a basic test that my server spins up', function() {
 
   it('clean-up! deleting other object created in test', function(done) {
     chai.request(app)
-      .del(`/dogs?id=${testID2}`)
+      .del(`/dogs/${testID2}`)
       .end(function(err, res) {
         expect(err).to.be.null
         expect(res).to.have.status(204)

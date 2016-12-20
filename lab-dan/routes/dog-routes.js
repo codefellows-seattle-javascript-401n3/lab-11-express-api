@@ -20,8 +20,8 @@ module.exports = (router, storage) => {
       })
   })
 
-  router.get('/dogs', function(request, response) {
-    storage.fetchItem(request.query.id)
+  router.get('/dogs/:id', function(request, response) {
+    storage.fetchItem(request.params.id)
       .then(data => {
         responseHandler.sendJSON(response, data.code, data.data)
       })
@@ -50,8 +50,8 @@ module.exports = (router, storage) => {
       })
   })
 
-  router.delete('/dogs', function(request, response) {
-    storage.deleteItem(request.query.id)
+  router.delete('/dogs/:id', function(request, response) {
+    storage.deleteItem(request.params.id)
       .then(data => {
         responseHandler.sendText(response, data.code, data.text)
       })
