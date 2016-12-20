@@ -26,7 +26,7 @@ storage.writeFile = function(data, status) {
 
 storage.fetchItem = function(id) {
   if (!id) {
-    return storage.fetchAll()
+    return Promise.reject('missing id\n')
   }
   return fs.readFilePromised(DATA_PATH + `${id}.json`)
     .then(data => {
