@@ -5,4 +5,5 @@ module.exports = (err, req, res, next) => {
 
   err = createError(500, err.message);
   res.status(err.status).send(err.name);
+  next();
 };
