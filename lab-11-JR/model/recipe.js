@@ -1,7 +1,9 @@
 'use strict';
 
-const createError = require('http-errors');
+const uuid = require('node-uuid');
 
-const Recipe = function(name, ingredients) {
-  if(!name) throw 
-}
+module.exports = function(name, ingredients) {
+  this.name = name,
+  this.ingredient = ingredients,
+  this.id = uuid.v4();
+};

@@ -4,10 +4,10 @@ const express = require('express');
 const PORT = process.env.PORT || 3000;
 const app =  express();
 const cors = require('./lib/cors');
-const createError = require('./lib/http-errors');
+// const createError = require('./lib/error-middleware');
 
 app.use(cors);
-app.use(createError);
+// app.use(createError);
 
 app.get('/', (req, res) => {
   res.json({});
