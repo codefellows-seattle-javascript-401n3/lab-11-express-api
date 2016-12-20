@@ -58,7 +58,7 @@ describe('Testing the recipe routes', function() {
   describe('testing PUT /api/recipe', function() {
     it('should respond with 200 for a put with a valid body and should change storage', function(done) {
       request.put('localhost:3000/api/recipe/4f04073e-48fe-42e0-a440-03111ace855d')
-      .send({name: 'meatloaf', content: 'beet', mealType: 'soup'})
+      .send({name: 'meatloaf', content: 'beef', mealType: 'dinner'})
       .end((err, res) => {
         if(err) return done(err);
         expect(res.status).to.equal(200);
