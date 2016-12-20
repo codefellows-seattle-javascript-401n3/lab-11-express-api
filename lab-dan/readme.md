@@ -15,9 +15,9 @@ Here's an example object that will be sent even if you have not POSTed any data:
 }
 ```
 
-You can call ```/dogs``` or ```/dogs/all``` to get all existing objects. It will return a JSON object.
+You can call```/dogs/all``` to get all existing objects. It will return a JSON object.
 
-GET ```/dogs?id=[existing-uuid]``` -- grab a specific object by its id. It will return a JSON object.
+GET ```/dogs/[existing-uuid]``` -- grab a specific object by its id. It will return a JSON object.
 
 POST ```/dogs``` (```{name: [NAME], breed: [BREED]}```) -- create a new object with a specified
   name and breed. If no name or breed is given, the object will still be created with
@@ -27,6 +27,6 @@ PUT ```/dog``` (```{id: [ID], name: [NAME], breed: [BREED]}```) -- update an exi
   update you must give the id, otherwise a new object will be created. It will return
   the updated or new JSON object.
 
-DELETE ```/dogs?id=[existing-uuid]``` -- delete an existing record. It will return the text
+DELETE ```/dogs/[existing-uuid]``` -- delete an existing record. It will return the text
 ```delete completed``` and a ```204``` status code if successful. If there is no existing object
 for the given ID, it will still return the same success message and code.
