@@ -22,6 +22,8 @@ exports.createItem = function(schemaName, item){
 exports.updateItem = function(schemaName, id, newTitle, newArtist){
   if (!schemaName) return Promise.reject(createError(400, 'expected schemaName'));
   if (!id) return Promise.reject(createError(400, 'expected item'));
+  if (!newTitle) return Promise.reject(createError(400, 'expected newTitle'));
+  if (!newArtist) return Promise.reject(createError(400, 'expected newArtist'));
 
   return fs.readFileProm(`${__dirname}/../data/${schemaName}/${id}.json`)
   .then(data => {
@@ -40,7 +42,7 @@ exports.updateItem = function(schemaName, id, newTitle, newArtist){
 
 exports.fetchItem = function(schemaName, id){
   if(!schemaName) return Promise.reject(createError(400, 'expected schemaName'));
-  if(!id) return Promise.reject(createError('expected id'));
+  if(!id) return Promise.reject(createError(400, 'expected id'));
 
   return fs.readFileProm(`${__dirname}/../data/${schemaName}/${id}.json`)
   .then(data => {

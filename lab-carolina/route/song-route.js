@@ -56,7 +56,7 @@ module.exports = function(router){
       });
     }
   });
-  router.delete('api/songs', function(req, res){
+  router.delete('/api/songs', function(req, res){
     res.status(400).send('bad request');
   });
 };

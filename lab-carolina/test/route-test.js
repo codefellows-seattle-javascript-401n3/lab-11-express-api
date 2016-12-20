@@ -87,9 +87,41 @@ describe('testing song routes', function(){
         done();
       });
     });
+  });
+
+//put
+  describe('testing PUT /api/song', function(){
+    it('should return a status of 200', function(done){
+      request.put(`localhost:3000/api/song/${song.id}`)
+      .send({title: 'new', artist:'different'})
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body.title).to.equal('new');
+        expect(res.body.artist).to.equal('different');
+        done();
+      });
+    });
+
+    it('should return a status of 400 for invalid body', function(done){
+      request.put(`localhost:3000/api/song/${song.id}`)
+      .send('hi')
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.text).to.equal('bad request');
+        done();
+      });
+    });
+
+    it('should return a status of 400 for no body', function(done){
+      request.put(`localhost:3000/api/song/${song.id}`)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.text).to.equal('bad request');
+        done();
+      });
+    });
+
 
 
   });
-
-
 });
