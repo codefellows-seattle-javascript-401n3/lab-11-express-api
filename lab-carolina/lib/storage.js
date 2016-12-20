@@ -21,7 +21,7 @@ exports.createItem = function(schemaName, item){
 
 exports.updateItem = function(schemaName, id, newTitle, newArtist){
   if (!schemaName) return Promise.reject(createError(400, 'expected schemaName'));
-  if (!id) return Promise.reject(createError(400, 'expected item'));
+  if (!id) return Promise.reject(createError(400, 'expected id'));
   if (!newTitle) return Promise.reject(createError(400, 'expected newTitle'));
   if (!newArtist) return Promise.reject(createError(400, 'expected newArtist'));
 
