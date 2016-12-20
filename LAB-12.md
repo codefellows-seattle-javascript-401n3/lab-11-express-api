@@ -9,12 +9,11 @@
   * write how long you spent on canvas
 
 # Directions
-* refactor your app to use a router for your single resource
 * refactor your routes so that requests use parameters instead of query strings
 * refactor your app so the error-handling middleware is its own module
 
 
-# Test 
+# Test
 * `GET` - request no longer have 400 test
 * `PUT and POST` - test 400 for bad json  
 * `DELETE` - test 404, for a DELETE request with an invalid or missing id
