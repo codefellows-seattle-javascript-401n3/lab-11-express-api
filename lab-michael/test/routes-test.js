@@ -7,7 +7,7 @@ require('../server.js');
 
 
 describe('Testing the recipe routes', function() {
-  // let recipe = null;
+
   describe('Testing Invalid Routes', function() {
     it('should return error bad route', function(done) {
       request.get('localhost:3000/api/recipeisee')
@@ -41,7 +41,7 @@ describe('Testing the recipe routes', function() {
     });
   });
   describe('POST TEST /api/recipe', function() {
-    it('should return a recipe', function(done) {
+    it('should create a new recipe', function(done) {
       request.post('localhost:3000/api/recipe')
       .send({name: 'meatloaf', content: 'beef', mealType: 'dinner'})
       .end((err, res) => {
@@ -51,7 +51,21 @@ describe('Testing the recipe routes', function() {
         expect(res.body.content).to.equal('beef');
         expect(res.body.mealType).to.equal('dinner');
 
-        res.body = null;
+        recipe = res.body;
+        done();
+      });
+    });
+  });
+  describe('testing PUT /api/recipe', function() {
+    it('should respond with 200 for a put with a valid body and should change storage', function(done) {
+      request.put('localhost:3000/api/recipe/4f04073e-48fe-42e0-a440-03111ace855d')
+      .send({name: 'clam chowder', content: 'clams', mealType: 'soup'})
+      .end((err, res) => {
+        if(err) return done(err);
+        expect(res.status).to.equal(200);
+        expect(res.body.name).to.equal('clam chowder');
+        expect(res.body.content).to.equal('clams');
+        expect(res.body.mealType).to.equal('soup');
         done();
       });
     });
