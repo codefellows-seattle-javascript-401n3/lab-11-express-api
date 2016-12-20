@@ -52,13 +52,6 @@ describe('testing user routes', function() {
         done();
       });
     });
-    it('should should respond with "bad request" if no id provided in request', function(done) {
-      request.get('http://localhost:3000/api/users?cheese=gouda')
-        .end((err, res) => {
-          expect(res.status).to.equal(400);
-          done();
-        });
-    });
   });
   describe('The PUT function for /api/users', function() {
     it('should return a status of 200 when a valid user route is hit on a put request', function(done) {

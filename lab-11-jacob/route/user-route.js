@@ -3,9 +3,9 @@ const User = require('../model/resource.js');
 let jsonParser = require('body-parser').json();
 
 module.exports = function(router) {
-  router.get('/api/users', function(req, res) {
-    if (req.query.id) {
-      storage.fetchItem('users', req.query.id)
+  router.get('/api/users/:id', function(req, res) {
+    if (req.params.id) {
+      storage.fetchItem('users', req.params.id)
       .then(user => {
         if(!user) {
           console.error('not found');
@@ -19,7 +19,7 @@ module.exports = function(router) {
     res.status(400).end('bad request');
   });
 
-  router.put('/api/users', jsonParser, (req, res) => {
+  router.put('/api/users/:id', jsonParser, (req, res) => {
     if (Object.keys(req.body).length === 0) {
       res.writeHead(400, {'Content-Type': 'text/plain',
       });
@@ -27,8 +27,8 @@ module.exports = function(router) {
       res.end();
       return;
     }
-    if (req.query.id) {
-      storage.fetchItem('users', req.query.id)
+    if (req.params.id) {
+      storage.fetchItem('users', req.params.id)
       .then(data => {
         data.username = req.body.username;
         res.json(req.body);
@@ -70,14 +70,14 @@ module.exports = function(router) {
     }
   });
 
-  router.delete('/api/users', function(req, res) {
+  router.delete('/api/users/:id', function(req, res) {
     try {
-      var user = (req.query.id);
+      var user = (req.params.id);
       storage.deleteUser('users', user);
       res.writeHead(204, {
         'Content-Type': 'text/plain',
       });
-      res.end(); //normally I would log 'user deleted' or something.
+      res.end('success'); //normally I would log 'user deleted' or something.
     } catch (err) {
       console.error(err);
       res.writeHead(400, {
