@@ -51,7 +51,6 @@ describe('Testing the recipe routes', function() {
         expect(res.body.content).to.equal('beef');
         expect(res.body.mealType).to.equal('dinner');
 
-        recipe = res.body;
         done();
       });
     });
