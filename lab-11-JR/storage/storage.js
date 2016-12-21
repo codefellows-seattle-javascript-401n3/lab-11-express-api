@@ -3,8 +3,9 @@
 
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
-const createError = require('error-middleware');
+const createError = require('http-errors');
 //create storage object to attach .createAll/.fetchAll
+const storage = {};
 
 exports.createItem = function(recipeSchema, recipe) {
   //this looks like recipeConstructor/recipeInstanceWithUniqueID
@@ -28,5 +29,5 @@ exports.fetchItem = function(recipeSchema, id) {
       return Promise.reject(createError(500, err.message));
     }
   })
-  .catch((err) => Promise.reject(createError(500, err.message)));
+  .catch((err) => Promise.reject(createError(404, err.message)));
 };
