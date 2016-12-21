@@ -25,7 +25,8 @@ app.post('/api/recipe', jsonParser, (req, res, next) => {
   try {
     const recipe = new Recipe(req.body.name, req.body.ingredients);
     storage.createItem('recipe', recipe)
-    .then(recipe => res.json(recipe))
+    // res.json(recipe);
+    .then(createdRecipe => res.json(createdRecipe))
     .catch(err => {
       err = createError(500, 'new recipe not saved in storage module');
       next(err);

@@ -5,7 +5,6 @@ const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
 const createError = require('http-errors');
 //create storage object to attach .createAll/.fetchAll
-const storage = {};
 
 exports.createItem = function(recipeSchema, recipe) {
   //this looks like recipeConstructor/recipeInstanceWithUniqueID
@@ -13,8 +12,7 @@ exports.createItem = function(recipeSchema, recipe) {
   if(!recipe) return Promise.reject(createError(400, 'expected unique recipe'));
   const json = JSON.stringify(recipe);
   return fs.writeFileProm(`${__dirname}/../data/${recipeSchema}/${recipe.id}.json`, json)
-  .then(() => recipe)
-  .catch((err) => Promise.reject(createError(500, err.message)));
+  .then(() => recipe);
 };
 
 exports.fetchItem = function(recipeSchema, id) {
