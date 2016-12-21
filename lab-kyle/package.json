@@ -1,0 +1,38 @@
+{
+  "name": "lab-kyle",
+  "version": "1.0.0",
+  "description": "Code Fellows 401 - Lab 11 single-resource-express-api",
+  "main": "index.js",
+  "directories": {
+    "test": "mocha"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "api",
+    "express"
+  ],
+  "author": "Kyle Winckler",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "fetch": "^1.1.0",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-mocha": "^3.0.1",
+    "mocha": "^3.2.0",
+    "superagent": "^3.2.1"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.6",
+    "body-parser": "^1.15.2",
+    "del": "^2.2.2",
+    "express": "^4.14.0",
+    "http-errors": "^1.5.1",
+    "morgan": "^1.7.0",
+    "node-uuid": "^1.4.7"
+  }
+}
