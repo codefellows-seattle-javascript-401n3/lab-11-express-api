@@ -36,11 +36,26 @@ app.post('/api/recipe', jsonParser, (req, res, next) => {
   }
 });
 
+app.delete('/api/recipe/:id', (req, res, next) => {
+  debug('in delete route /api/recipe');
+  try {
+    if(req.params.id) {
+      storage.deleteItem('recipe', req.params.id)
+      .then(deletedRecipe => res.json(deletedRecipe))
+      .catch(err => {
+        err = createError(204, 'id does not exist');
+        next(err);
+      });
+    }
+  } catch(err) {
+    next(createError(404, 'no content'));
+  }
+});
+
 // app.put('/api/recipe/?id=', bodyParser, (req, res) => {
 //   //update some stuff or error out
 // });
 
-// app.delete('/api/recipe/?id=', );
 
 app.use(handleError);
 

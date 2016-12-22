@@ -4,6 +4,7 @@
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
 const createError = require('http-errors');
+const del = require('del');
 //create storage object to attach .createAll/.fetchAll
 
 exports.createItem = function(recipeSchema, recipe) {
@@ -27,5 +28,17 @@ exports.fetchItem = function(recipeSchema, id) {
       return Promise.reject(createError(500, err.message));
     }
   })
-  .catch((err) => Promise.reject(createError(404, err.message)));
+  .catch(err => Promise.reject(createError(404, err.message)));
+};
+
+exports.deleteItem = function(recipeSchema, id) {
+  if(!recipeSchema) return Promise.reject(createError(400, 'expected Schema'));
+  if(!id) return Promise.reject(createError(400, 'expected unique recipe id'));
+  return Promise.resolve(del([`${__dirname}/../data/${recipeSchema}/${id}.json`]))
+  .then(paths => {
+    console.log(`deleted ${id}.json`);
+    return Promise.resolve(paths);
+  })
+  .catch(err => Promise.reject(createError(404, err.message))
+  );
 };
