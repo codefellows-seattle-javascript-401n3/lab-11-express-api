@@ -35,6 +35,7 @@ exports.deleteItem = function(recipeSchema, id) {
   if(!recipeSchema) return Promise.reject(createError(400, 'expected Schema'));
   if(!id) return Promise.reject(createError(400, 'expected unique recipe id'));
   return Promise.resolve(del([`${__dirname}/../data/${recipeSchema}/${id}.json`]))
+  //i could probably just put the suffix on here and not do Promise.resolve...but i am lazy and dont want to change it.
   .then(paths => {
     console.log(`deleted ${id}.json`);
     return Promise.resolve(paths);

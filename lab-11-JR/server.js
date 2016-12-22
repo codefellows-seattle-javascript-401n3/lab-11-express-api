@@ -18,6 +18,19 @@ app.use(cors);
 //   res.json({});
 //   //get some stuff
 // });
+app.get('/api/recipe', (req, res, next) => {
+  debug('in get route');
+  try {
+    storage.fetchItem('recipe', req.id)
+    .then(requestedItem => res.json(requestedItem))
+    .catch(err => {
+      err = createError(204, 'lol no content');
+      next(err);
+    });
+  } catch (err) {
+    next(createError(400, 'bad request or invalid id'));
+  }
+});
 
 app.post('/api/recipe', jsonParser, (req, res, next) => {
   debug('in route /api/recipe');
