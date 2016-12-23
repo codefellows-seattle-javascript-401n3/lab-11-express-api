@@ -14,6 +14,11 @@ storage.createItem = function(item){
 };
 
 storage.updateItem = function(id, newMake, newModel) {
+  // if (!schemaName) return Promise.reject(new Error('expected schemaName'));
+  if (!id) return bluebird.reject(new Error('expected id'));
+  if (!newMake) return bluebird.reject(new Error('expected newMake'));
+  if (!newModel) return bluebird.reject(new Error('expected newModel'));
+
   return fs.readFileProm(`${__dirname}/../data/${id}.json`)
     .then(data => {
       try {
@@ -56,12 +61,18 @@ storage.fetchItem = function(id){
 // };
 
 storage.deleteItem = function(id){
-  return del([`${__dirname}/../data/${id}.json`])
-  .then( paths => {
-    console.log('Deleted file: ', `${id}.json`);
-    return bluebird.resolve(paths);
-  })
-  .catch(err => bluebird.reject(err));
+  if (!id) return bluebird.reject(new Error('expected id'));
+
+  console.log('got the file');
+    return del([`${__dirname}/../data/${id}.json`])
+    .then( paths => {
+      console.log('Deleted file: ', `${id}.json`);
+      return bluebird.resolve(paths);
+    })
+  .catch(err => {
+    console.error(err);
+  });
+  return bluebird.reject(new Error('file path does not exist'));
 };
 
 module.exports = storage;

@@ -74,16 +74,13 @@ module.exports = function(router) {
     if(req.params.id) {
       storage.deleteItem(req.params.id)
       .then(() => {
-        console.log('in delete cb');
-        //res.sendText(res, 200, 'deleted the file');
-        res.json({msg: 'deleted the file'});
+        res.status(204).end();
       })
       .catch(err => {
-        res.status(204);
+        res.status(404);
         res.json({msg: 'Not Found'});
       });
       return;
     }
-    // res.sendText(res, 400, 'Bad Request');
   });
 };
