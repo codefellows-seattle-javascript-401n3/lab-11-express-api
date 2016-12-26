@@ -6,7 +6,7 @@ const createError = require('http-errors');
 const StatSnapshot = require('../model/statsnapshot');
 const resourceManager = require('../lib/resourcemanager');
 
-const router = express.Router();
+const router = new express.Router();
 
 router.get('/statshots', function(req, res) {
   res.json(resourceManager.getResourceIdList());
