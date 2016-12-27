@@ -43,7 +43,7 @@ router.put('/statshots', function(req, res, next) {
 });
 
 router.delete('/statshots/:id', function(req, res, next) {
-  StatSnapshot.remove({ _id: req.params.id }).then(res.end()).catch(next);
+  StatSnapshot.remove({ _id: req.params.id }).then(res.status(204).end()).catch(next);
 });
 
 module.exports = router;
