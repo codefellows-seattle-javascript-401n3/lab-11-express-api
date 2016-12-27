@@ -1,51 +1,40 @@
 'use strict';
 
 const express = require('express');
-const createError = require('http-errors');
 
 const StatSnapshot = require('../model/statsnapshot');
 
 const router = new express.Router();
 
-router.get('/statshots', function(req, res) {
-  res.json(resourceManager.getResourceIdList());
+router.get('/statshots', function(req, res, next) {
+  StatSnapshot.find()
+  .then(statshots => res.json(statshots))
+  .catch(next);
 });
 
-router.get('/statshots/:id', function(req, res) {
-  resourceManager.getResource(req.params.id, function(err, data) {
-    if (err) throw createError(404, err.message);
-    res.json(data);
-  });
+router.get('/statshots/:id', function(req, res, next) {
+  StatSnapshot.findById(req.params.id)
+  .then(statshot => res.json(statshot))
+  .catch(next);
 });
 
-router.post('/statshots', function(req, res) {
-  let snapshot = new StatSnapshot(req.body.username, req.body.stats);
-  resourceManager.addResource(snapshot, function(err) {
-    if (err) throw createError(500, err.message);
-    res.json(snapshot);
-  });
+router.post('/statshots', function(req, res, next) {
+  new StatSnapshot(req.body).save()
+  .then(statshot => res.json(statshot))
+  .catch(next);
 });
 
-router.put('/statshots/:id', function(req, res) {
-  if (!req.body.username || !req.body.stats) throw createError(400, 'expected username and stats');
-  resourceManager.getResource(req.params.id, function(err, data) {
-    if (err) throw createError(400, err.message);
-    if (data) {
-      data.username = req.body.username;
-      data.stats = req.body.stats;
-      resourceManager.addResource(data, function(err) {
-        if (err) throw createError(400, err.message);
-        res.status(200).json(data);
-      });
-    }
-  });
+router.put('/statshots/:id', function(req, res, next) {
+  StatSnapshot.findById(req.body.id)
+  .then(function(stat) {
+    stat.username = req.body.username;
+    stat.stats = req.body.stats;
+    stat.save().then(res.json(stat));
+  }).catch(next);
 });
 
-router.delete('/statshots/:id', function(req, res) {
-  resourceManager.delete(req.params.id, function(err) {
-    if (err) throw createError(400, err.message);
-    res.status(200).end();
-  });
+router.delete('/statshots/:id', function(req, res, next) {
+  StatSnapshot.remove({ _id: req.body.id }).then(res.end()).catch(next);
 });
 
 module.exports = router;
