@@ -23,7 +23,7 @@ app.get('*', function(req, res, next) {
   next();
 });
 
-app.use('/api', require('./routes/statshotroute'));
+app.use('/api', require('./routes/statshot-route'));
 app.use(errorRoute);
 
 module.exports = app;
