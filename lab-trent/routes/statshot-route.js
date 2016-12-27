@@ -4,7 +4,6 @@ const express = require('express');
 const createError = require('http-errors');
 
 const StatSnapshot = require('../model/statsnapshot');
-const resourceManager = require('../lib/resourcemanager');
 
 const router = new express.Router();
 
