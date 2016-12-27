@@ -14,15 +14,12 @@ const storage = require('./storage/storage.js');
 app.use(debug('dev'));
 app.use(cors);
 
-// app.get('/api/recipe/?id=', (req, res) => {
-//   res.json({});
-//   //get some stuff
-// });
 app.get('/api/recipe', (req, res, next) => {
   debug('in get route');
   try {
-    storage.fetchItem('recipe', req.id)
+    storage.fetchItem('recipe', req.params.id)
     .then(requestedItem => res.json(requestedItem))
+    //will just return the item, not the object itself
     .catch(err => {
       err = createError(204, 'lol no content');
       next(err);
@@ -65,9 +62,21 @@ app.delete('/api/recipe/:id', (req, res, next) => {
   }
 });
 
-// app.put('/api/recipe/?id=', bodyParser, (req, res) => {
-//   //update some stuff or error out
-// });
+app.put('/api/recipe', jsonParser, (req, res, next) => {
+  debug('inside put route');
+  try {
+    if(req.params.id) {
+      storage.updateItem('recipe', req.params.id, req.body.name, req.body.ingredients)
+      .then(newRecipe => res.json(newRecipe))
+      .catch(err => {
+        err = createError(400, 'invalid object parameters');
+        next(err);
+      });
+    }
+  } catch(err) {
+    next(createError(500, 'internal error'));
+  }
+});
 
 
 app.use(handleError);

@@ -16,6 +16,28 @@ exports.createItem = function(recipeSchema, recipe) {
   .then(() => recipe);
 };
 
+exports.updateItem = function(recipeSchema, id, newRecipe) {
+  if(!recipeSchema) return Promise.reject(createError(400, 'expected Schema'));
+  if(!newRecipe) return Promise.reject(createError(400, 'expected new recipe name'));
+  if(!id) return Promise.reject(createError(400, 'expected id'));
+
+  return fs.readFileProm(`${__dirname}/../data/${recipeSchema}/${id}.json`)
+  .then(data => {
+    try {
+      let item = JSON.parse(data.toString());
+      item.name = newRecipe.name;
+      item.ingredients = newRecipe.ingredients;
+      item.id = id;
+
+      let json = JSON.stringify(item);
+      fs.writeFileProm(`${__dirname}/../data/${recipeSchema}/${id}.json`, json);
+      return item;
+    } catch (err) {
+      return Promise.reject(createError(400, 'expected different properties'));
+    }
+  });
+};
+
 exports.fetchItem = function(recipeSchema, id) {
   if(!recipeSchema) return Promise.reject(createError(400, 'expected Schema'));
   if(!id) return Promise.reject(createError(400, 'expected unique recipe id'));
