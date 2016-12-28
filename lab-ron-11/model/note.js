@@ -1,10 +1,11 @@
 'use strict';
 
 const uuid = require('node-uuid');
+const createError = require('http-errors')
 
 module.exports = function(note, content) {
-  if(!note) throw Error('note expected.');
-  if(!content) throw Error('content expected.');
+  if(!note) throw createError(400, 'note expected.');
+  if(!content) throw createError(400, 'content expected.');
   this.id = uuid.v1();
   this.note = note;
   this.content = content;

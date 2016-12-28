@@ -2,7 +2,19 @@
 
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
-const storage = {};
+const createError = require('http-errors')
+
+module.exports = exports = {}
+
+exports.createItem = function(note, content) {
+  if (!note) return Promise.reject(createError(400, 'expected note'));
+  if (!content) return Promise.reject(createError(400, 'expected content'));
+
+  let json = JSON.stringify(content);
+  return fs.writeFileProm(`${__dirname}/../data/note/${content.id}.json`, json)
+  .then(() =>  { console.log('created a new item');content;})
+  .catch( err => Promise.reject(createError(500, err.message)));
+};
 
 exports.fetchAll = function(note) {
   if (!note) return Promise.reject(new Error('expected note'));
@@ -11,19 +23,10 @@ exports.fetchAll = function(note) {
   .catch(err => Promise.reject(err));
 };
 
-exports.createItem = function(note, content) {
-  if (!note) return Promise.reject(new Error('expected note'));
-  if (!content) return Promise.reject(new Error('expected content'));
-
-  let json = JSON.stringify(content);
-  return fs.writeFileProm(`${__dirname}/../data/note/${content.id}.json`, json)
-  .then(() =>  { console.log('created a new item');content;})
-  .catch( err => Promise.reject(err));
-};
 
 exports.fetchItem = function(note, id) {
-  if(!note) return Promise.reject(new Error('expected note'));
-  if(!id) return Promise.reject(new Error('expected id'));
+  if(!note) return Promise.reject(createError(400, 'expected note'));
+  if(!id) return Promise.reject(createError(400, 'expected id'));
 
   return fs.readFileProm(`${__dirname}/../data/note/${id}.json`)
   .then(data => {
@@ -31,20 +34,20 @@ exports.fetchItem = function(note, id) {
       let content = JSON.parse(data.toString());
       return content;
     } catch (err){
-      return Promise.reject(err);
+      return Promise.reject(createError(500, err.message);
     }
   })
-  .catch(err => Promise.reject(err));
+  .catch(err => Promise.reject(createError(400, err.message)));
 };
 
 exports.deleteItem = function(note, id) {
   return new Promise((resolve, reject) => {
 
-    if(!note) return reject(new Error('expected note'));
-    if(!id) return reject(new Error('expected id'));
+    if(!note) return reject(createError(400, 'expected note'));
+    if(!id) return reject(createError(400, 'expected id'));
 
     return fs.unlinkProm(`${__dirname}/../data/note/${id}.json`)
     .then( () => {id;console.log('successfully deleted: ' + id);})
-    .catch( (err) => reject(err));
+    .catch( (err) => reject(createError(404, err.message)));
   });
 };
