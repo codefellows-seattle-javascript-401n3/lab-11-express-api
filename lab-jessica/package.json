@@ -1,0 +1,42 @@
+{
+  "name": "lab-11-express-api",
+  "version": "1.0.0",
+  "description": "Lab 11 - Single Resource Express API",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jessicamvs/lab-11-express-api.git"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "api"
+  ],
+  "author": "Jessica Vasquez-Soltero",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jessicamvs/lab-11-express-api/issues"
+  },
+  "homepage": "https://github.com/jessicamvs/lab-11-express-api#readme",
+  "dependencies": {
+    "bluebird": "^3.4.6",
+    "body-parser": "^1.15.2",
+    "del": "^2.2.2",
+    "express": "^4.14.0",
+    "http-errors": "^1.5.1",
+    "mkdirp": "^0.5.1",
+    "node-uuid": "^1.4.7"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-mocha": "^3.0.1",
+    "mocha": "^3.2.0",
+    "morgan": "^1.7.0",
+    "superagent": "^3.3.1"
+  }
+}
