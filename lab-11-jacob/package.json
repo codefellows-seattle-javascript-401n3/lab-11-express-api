@@ -1,0 +1,28 @@
+{
+  "name": "lab08-jacob",
+  "version": "1.0.0",
+  "description": "lab08 single resource api work",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "jacob isenberg",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.11.1",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-mocha": "^3.0.1",
+    "http-errors": "^1.5.1",
+    "mocha": "^3.2.0",
+    "morgan": "^1.7.0",
+    "superagent": "^3.2.0"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.6",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "node-uuid": "^1.4.7"
+  }
+}
