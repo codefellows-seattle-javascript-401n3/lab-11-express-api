@@ -78,11 +78,11 @@ describe('testing song routes', function(){
       });
     });
 
-    it('should have a return status of 400', function(done){
+    it('should have a return status of 404', function(done){
       request.get('localhost:3000/api/song')
       .end((err, res) => {
-        expect(res.status).to.equal(400);
-        expect(res.text).to.equal('bad request');
+        expect(res.status).to.equal(404);
+        expect(res.text).to.equal('Cannot GET /api/song\n');
         expect(err).to.not.equal(null);
         done();
       });
@@ -120,5 +120,40 @@ describe('testing song routes', function(){
         done();
       });
     });
+
+    //delete
+    describe('testing DELETE /api/song', function(){
+      it('should return 404 for invalid id', function(done){
+        request.delete(`localhost:3000/api/song/<unique ID>`)
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          expect(res.text).to.equal('not found');
+          done();
+        });
+      });
+
+      it('should return 404 for missing id', function(done){
+        request.delete(`localhost:3000/api/song`)
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          expect(res.text).to.equal('Cannot DELETE /api/song\n');
+          done();
+        });
+      });
+
+      it('should return 204 with no response for a delete request with valid id', function(done){
+        request.delete(`localhost:3000/api/song/${song.id}`)
+        .end((err, res) => {
+          expect(res.status).to.equal(204);
+          expect(res.text).to.equal('');
+          done();
+        });
+      });
+
+    });
+
+
+
+
   });
 });

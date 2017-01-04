@@ -18,9 +18,6 @@ module.exports = function(router){
       return;
     }
   });
-  router.get('/api/song', function(req, res){
-    res.status(400).send('bad request');
-  });
 
   router.post('/api/song', function(req,res) {
     try {
@@ -57,6 +54,6 @@ module.exports = function(router){
     }
   });
   router.delete('/api/songs', function(req, res){
-    res.status(400).send('bad request');
+    res.status(404).send('not found');
   });
 };
