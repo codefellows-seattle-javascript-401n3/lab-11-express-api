@@ -3,8 +3,7 @@
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
 const createError = require('http-errors');
-
-const storage = {};
+const del = require('del')
 
 exports.fetchAll = function(recipe) {
   return fs.readdirProm(`${__dirname}/../data/${recipe}/`)
@@ -68,10 +67,10 @@ exports.deleteItem = function(recipe, id) {
     if (!recipe) return reject (createError('expected recipe'));
     if (!id) return reject (createError('expected id'));
 
-    recipe = storage[recipe];
-    if(!recipe) return reject(createError('recipe not found'));
-    delete recipe[id];
-
-    resolve();
+    return resolve(del(`${__dirname}/../data/${recipe}/${id}.json`))
+    .then(recipe => {
+      recipe.join('\n');
+    })
+    .catch( err => Promise.reject(createError(404, err.message)));
   });
 };
