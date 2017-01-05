@@ -3,9 +3,9 @@ const User = require('../model/resource.js');
 let jsonParser = require('body-parser').json();
 
 module.exports = function(router) {
-  router.get('/api/users', function(req, res) {
-    if (req.query.id) {
-      storage.fetchItem('users', req.query.id)
+  router.get('/api/users/:id', function(req, res) {
+    if (req.params.id) {
+      storage.fetchItem('users', req.params.id)
       .then(user => {
         if(!user) {
           console.error('not found');
@@ -19,21 +19,25 @@ module.exports = function(router) {
     res.status(400).end('bad request');
   });
 
-  router.put('/api/users', jsonParser, (req, res) => {
-    if (Object.keys(req.body).length === 0) {
+  router.put('/api/users/:id', jsonParser, (req, res) => {
+    if (!req.params.id) {
       res.writeHead(400, {'Content-Type': 'text/plain',
       });
-      res.write('include body');
+      res.write('include user id');
       res.end();
       return;
     }
-    if (req.query.id) {
-      storage.fetchItem('users', req.query.id)
+    if (req.params.id) {
+      storage.fetchItem('users', req.params.id)
       .then(data => {
-        data.username = req.body.username;
-        res.json(req.body);
-        storage.updateItem(data);
-        res.end();
+        if(!data.username) {
+          res.status(400).end('INVALID JSON');
+        } else {
+          data.username = req.body.username;
+          res.json(req.body);
+          storage.updateItem(data);
+          res.end();
+        }
       })
         .catch(err => {
           console.error(err);
@@ -52,39 +56,42 @@ module.exports = function(router) {
       res.end();
       return;
     }
-    try {
-      var user = new User(req.body.username);
-      storage.createItem('users', user);
-      res.writeHead(200, {
-        'Content-Type': 'application/json',
-      });
-      res.write(JSON.stringify(user));
-      res.end();
-    } catch (err) {
-      console.error(err);
-      res.writeHead(400, {
-        'Content-Type': 'text/plain',
-      });
-      res.write('Bad request');
-      res.end();
+    if (!req.body.username) {  //if username is given as a property of the body
+      res.status(400).end('INVALID JSON');
+    } else {
+      try {
+        var user = new User(req.body.username);
+        storage.createItem('users', user);
+        res.writeHead(200, {
+          'Content-Type': 'application/json',
+        });
+        res.write(JSON.stringify(user));
+        res.end();
+      } catch (err) {
+        console.error(err);
+        res.writeHead(400, {
+          'Content-Type': 'text/plain',
+        });
+        res.write('Bad request');
+        res.end();
+      }
     }
   });
 
-  router.delete('/api/users', function(req, res) {
-    try {
-      var user = (req.query.id);
-      storage.deleteUser('users', user);
+  router.delete('/api/users/:id', function(req, res) {
+    storage.deleteUser('users', req.params.id)
+    .then(() => {
       res.writeHead(204, {
         'Content-Type': 'text/plain',
       });
-      res.end(); //normally I would log 'user deleted' or something.
-    } catch (err) {
-      console.error(err);
-      res.writeHead(400, {
-        'Content-Type': 'text/plain',
+      res.end('success');
+    })
+      .catch(err => {
+        console.error(err);
+        res.writeHead(404, {
+          'Content-Type': 'text/plain',
+        });
+        res.end('invalid user');
       });
-      res.write('delete failed');
-      res.end();
-    }
   });
 };
