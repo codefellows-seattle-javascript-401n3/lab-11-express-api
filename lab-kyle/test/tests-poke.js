@@ -4,7 +4,7 @@ let request = require('superagent');
 let expect = require('chai').expect;
 
 require('../server.js');
-// const port = process.env.PORT || 3000;
+
 let url = 'http://localhost:3000/api';
 
 describe('a restful endpoint', function() {
@@ -89,6 +89,14 @@ describe('a restful endpoint', function() {
       .end(function(err, res) {
         if (err) return done(err);
         expect(res.status).to.equal(204);
+        expect(res.body).to.eql({});
+        done();
+      });
+    });
+    it('will respond 404 if the request is missing an ID', function(done) {
+      request.delete(`${url}/pokemon/`)
+      .end(function(err, res) {
+        expect(res.status).to.equal(404);
         done();
       });
     });

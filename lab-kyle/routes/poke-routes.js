@@ -46,7 +46,7 @@ module.exports = (router) => {
         });
       return;
     }
-    res.status(400).send('bad request');
+    res.status(404).send('not found');
   });
 
 };
