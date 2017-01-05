@@ -67,8 +67,4 @@ module.exports = function(router){
       });
     }
   });
-
-  router.delete('/api/books', function(req, res) {
-    res.status(400).send('bad request');
-  });
 };

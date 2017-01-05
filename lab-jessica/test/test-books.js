@@ -71,15 +71,6 @@ describe('testing book routes', function() {
         done();
       });
     });
-
-    it('should respond with 400 along with bad request when no id provided', function(done) {
-      request.get('localhost:3000/api/books')
-      .end((err, res) => {
-        expect(res.status).to.equal(400);
-        expect(res.text).to.equal('bad request');
-        done();
-      });
-    });
   });
 
   describe('testing PUT /api/books', function() {
@@ -135,7 +126,7 @@ describe('testing book routes', function() {
   });
 
   describe('testing DELETE /api/books/:id', function() {
-    it('should respond with 204 with no content in the body', function(done) {
+    it('should respond with 204 with no content in the body when passed a valid id', function(done) {
       request.delete(`localhost:3000/api/books/${book.id}`)
       .end((err, res) => {
         expect(res.status).to.equal(204);
@@ -156,11 +147,11 @@ describe('testing book routes', function() {
     it('should respond with 400 along with \'bad request\' if no id provided', function(done) {
       request.delete('localhost:3000/api/books')
       .end((err, res) => {
-        expect(res.status).to.equal(400);
-        expect(res.text).to.equal('bad request');
+        expect(res.status).to.equal(404);
         done();
       });
     });
   });
+
 
 });
